@@ -69,8 +69,8 @@ class Shapes3dDataset(data.Dataset):
         else:
             self.metadata = {
                 c: {'id': c, 'name': 'n/a'} for c in categories
-            } 
-        
+            }
+
         # Set index
         for c_idx, c in enumerate(categories):
             self.metadata[c]['idx'] = c_idx
@@ -85,7 +85,7 @@ class Shapes3dDataset(data.Dataset):
             split_file = os.path.join(subpath, split + '.lst')
             with open(split_file, 'r') as f:
                 models_c = f.read().split('\n')
-            
+
             self.models += [
                 {'category': c, 'model': m}
                 for m in models_c

@@ -12,17 +12,6 @@ import numpy
 numpy_include_dir = numpy.get_include()
 
 # Extensions
-# pykdtree (kd tree)
-pykdtree = Extension(
-    'im2mesh.utils.libkdtree.pykdtree.kdtree',
-    sources=[
-        'im2mesh/utils/libkdtree/pykdtree/kdtree.c',
-        'im2mesh/utils/libkdtree/pykdtree/_kdtree_core.c'
-    ],
-    language='c',
-    extra_compile_args=['-std=c99', '-O3', '-fopenmp'],
-    extra_link_args=['-lgomp'],
-)
 
 # mcubes (marching cubes algorithm)
 mcubes_module = Extension(
@@ -76,11 +65,11 @@ dmc_pred2mesh_module = CppExtension(
     'im2mesh.dmc.ops.cpp_modules.pred2mesh',
     sources=[
         'im2mesh/dmc/ops/cpp_modules/pred_to_mesh_.cpp',
-    ]   
+    ]
 )
 
 dmc_cuda_module = CUDAExtension(
-    'im2mesh.dmc.ops._cuda_ext', 
+    'im2mesh.dmc.ops._cuda_ext',
     sources=[
         'im2mesh/dmc/ops/src/extension.cpp',
         'im2mesh/dmc/ops/src/curvature_constraint_kernel.cu',
@@ -93,7 +82,6 @@ dmc_cuda_module = CUDAExtension(
 
 # Gather all extension modules
 ext_modules = [
-    pykdtree,
     mcubes_module,
     triangle_hash_module,
     mise_module,
@@ -105,6 +93,7 @@ ext_modules = [
 
 setup(
     ext_modules=cythonize(ext_modules),
+    include_dirs=[numpy_include_dir],
     cmdclass={
         'build_ext': BuildExtension
     }

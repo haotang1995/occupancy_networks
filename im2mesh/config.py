@@ -18,7 +18,7 @@ method_dict = {
 def load_config(path, default_path=None):
     ''' Loads config file.
 
-    Args:  
+    Args:
         path (str): path to config file
         default_path (bool): whether to use default path
     '''
@@ -146,10 +146,24 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
         if return_category:
             fields['category'] = data.CategoryField()
 
+        if 'transform' in cfg['data']:
+            if cfg['data']['transform'] == 'crop_plane':
+                transform = data.CropPlaneVoxel()
+            elif cfg['data']['transform'] == 'crop_fplane':
+                transform = data.CropFixedPlaneVoxel()
+            elif cfg['data']['transform'] == 'crop_octant':
+                transform = data.CropOctantVoxel()
+            else:
+                raise ValueError('Invalid transform "%s"' %
+                                 cfg['data']['transform'])
+        else:
+            transform = None
+
         dataset = data.Shapes3dDataset(
             dataset_folder, fields,
             split=split,
             categories=categories,
+            transform=transform,
         )
     elif dataset_type == 'kitti':
         dataset = data.KittiDataset(
@@ -170,7 +184,7 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
         )
     else:
         raise ValueError('Invalid dataset "%s"' % cfg['data']['dataset'])
- 
+
     return dataset
 
 

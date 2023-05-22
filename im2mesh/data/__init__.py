@@ -14,6 +14,11 @@ from im2mesh.data.real import (
     KittiDataset, OnlineProductDataset,
     ImageDataset,
 )
+from im2mesh.data.voxel_transforms import (
+    CropPlaneVoxel,
+    CropFixedPlaneVoxel,
+    CropOctantVoxel,
+)
 
 
 __all__ = [
@@ -37,4 +42,8 @@ __all__ = [
     KittiDataset,
     OnlineProductDataset,
     ImageDataset,
+    # Voxel Transforms
+    CropPlaneVoxel,
+    CropFixedPlaneVoxel,
+    CropOctantVoxel,
 ]
